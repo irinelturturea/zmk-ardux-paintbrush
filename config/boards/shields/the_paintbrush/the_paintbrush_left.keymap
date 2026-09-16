@@ -27,5 +27,36 @@
 #define MIDDLE_NONES NONE(0, 0, 0)
 #define TRAILING_NONES NONE(0, 0, 0)
 
+/*****************************************
+ * ZMK Studio
+ *
+ * Every `the_paintbrush_left` target in .github/workflows/build.yml is built
+ * with the `studio-rpc-usb-uart` snippet and `-DCONFIG_ZMK_STUDIO=y`, so this
+ * keymap gets compiled with Studio support. Studio needs an `&studio_unlock`
+ * binding somewhere in the keymap (the unlock is per session, and it is
+ * enforced because ZMK Studio locking is on by default).
+ *
+ * ARDUX_LEFT's Custom layer has a free `&none` in its first position, so
+ * override the layer here - ardux.dtsi only defines its own default if
+ * ARDUX_LAYER_CUSTOM is not already defined - and use that spot for the
+ * unlock.
+ *
+ * To unlock: hold the Custom layer key (the O position on the base layer) and
+ * tap the first position (the S position). Remember that Studio overrides are
+ * written to the settings partition and survive reboots AND reflashes - run
+ * "Restore Stock Settings" in zmk.studio after flashing a new keymap.
+ *****************************************/
+#define ARDUX_LAYER_CUSTOM                                            \
+		custom {                                                       \
+			display-name = "Custom";                                          \
+			bindings = <                                               \
+				LEADING_NONES                                          \
+				&studio_unlock      &kp C_VOL_UP  &kp INS   &kp C_MUTE \
+				MIDDLE_NONES                                           \
+				&mo LAYER_ID_CUSTOM &kp C_VOL_DN  &kp PSCRN &sk RSHFT  \
+				TRAILING_NONES                                         \
+		>;                                                             \
+	};
+
 // Include main ardux.io keymap
 #include "../../../ardux.dtsi"

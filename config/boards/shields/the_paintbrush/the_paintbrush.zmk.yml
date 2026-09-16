@@ -1,0 +1,13 @@
+file_format: "1"
+id: the_paintbrush
+name: The Paintbrush
+type: shield
+url: https://github.com/arduxio/zmk-ardux
+requires: [pro_micro]
+features:
+  - keys
+  - display
+  - studio
+siblings:
+  - the_paintbrush_left
+  - the_paintbrush_right
