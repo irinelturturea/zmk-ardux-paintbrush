@@ -60,3 +60,27 @@
 
 // Include main ardux.io keymap
 #include "../../../ardux.dtsi"
+
+/*****************************************
+ * Override: BT_CLR clears ALL profiles
+ *
+ * Upstream ardux.dtsi binds the global BT_CLR combo (R + Y + T + I) to
+ * `&bt BT_CLR`, which only drops the bond of the ACTIVE profile - the other
+ * five keep stale bonds and the keyboard stays invisible to a new host until
+ * each profile is cleared one by one.
+ *
+ * `&bt BT_CLR_ALL` unpairs every profile and then auto-selects profile 0, so
+ * one chord puts the keyboard back into a clean pairing state.
+ *
+ * Node is declared AFTER the ardux.dtsi include on purpose: devicetree merges
+ * same-path nodes and the later property wins, so `bindings` here overrides
+ * the upstream value while `key-positions` / `timeout-ms` stay as upstream.
+ *****************************************/
+/ {
+    combos {
+        combo_bt_clr {
+            bindings = <&bt BT_CLR_ALL>;
+        };
+    };
+};
+
